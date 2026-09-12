@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "潮港都市",
+      "hasCanvas": true,
+      "bodyTextLen": 138,
+      "bodyTextHash": "dafcedeb08b732425dab16ddb6f2362f801a2a5f1a172d029f63a021d688ae9a",
+      "bodyTextPrefix": "海灣邊上的低密度都市沙盒 潮港都市 在這座海灣邊上的低密度都市裡步行、駕車、接任務，並設法甩掉通緝。 開始遊戲 操作說明 城市初",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "潮港都市",
+      "hasCanvas": true,
+      "bodyTextLen": 138,
+      "bodyTextHash": "dafcedeb08b732425dab16ddb6f2362f801a2a5f1a172d029f63a021d688ae9a",
+      "bodyTextPrefix": "海灣邊上的低密度都市沙盒 潮港都市 在這座海灣邊上的低密度都市裡步行、駕車、接任務，並設法甩掉通緝。 開始遊戲 操作說明 城市初",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

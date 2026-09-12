@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #07090d;
+  --color-surface: #12161c;
+  --color-surface-2: #1a212b;
+  --color-fg: #e8eaee;
+  --color-muted: #8b939e;
+  --color-subtle: #6b7380;
+  --color-primary: #5ec2b8;
+  --color-primary-fg: #06201d;
+  --color-border: color-mix(in oklab, var(--color-fg) 12%, transparent);
+  --color-danger: #d4564e;
+  --color-health: #5dba7a;
+  --color-wanted: #e0b25a;
+  --color-cash: #d6dbe3;
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+    "Source Han Sans TC", system-ui, sans-serif;
+  --font-display: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei",
+    sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    height: 100%;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.hud-panel {
+  background: color-mix(in oklab, var(--color-surface) 86%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+}
+
+.hud-stat {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
