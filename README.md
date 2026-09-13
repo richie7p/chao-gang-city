@@ -1,5 +1,9 @@
 # 潮港都市
 
+**繁體中文** | [English](README.en.md)
+
+**[線上展示 / Live Demo](https://zippy-delta-forge-sand.grok.me/)**
+
 **Chao Gang City** — 瀏覽器裡的 3D 開放世界都市沙盒。
 
 步行、找車、駕駛、接任務，並在通緝等級升高後甩掉警車。全程繁體中文介面，無需帳號即可遊玩。
