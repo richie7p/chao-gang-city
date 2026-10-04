@@ -20,6 +20,7 @@
  * `process.env`, which is why the merge has to happen before Vite starts.
  */
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
 import { readFileSync, realpathSync } from "node:fs";
 import { constants as osConstants } from "node:os";
 import { dirname, join } from "node:path";
@@ -111,7 +112,14 @@ function main(argv) {
     process.exit(2);
   }
   const env = mergeAppEnv(readAppEnv(projectRoot()), process.env);
-  const child = spawn(command, args, { stdio: "inherit", env });
+  // Invoke Vite's JavaScript entry with Node, avoiding Windows .cmd/PATH
+  // resolution and shell interpolation of user-provided arguments.
+  const require = createRequire(import.meta.url);
+  const executable = command === "vite" ? process.execPath : command;
+  const commandArgs = command === "vite"
+    ? [join(dirname(require.resolve("vite/package.json")), "bin/vite.js"), ...args]
+    : args;
+  const child = spawn(executable, commandArgs, { stdio: "inherit", env });
   // The dev server is long-running and is stopped by signalling this wrapper.
   for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
     process.on(signal, () => child.kill(signal));

@@ -3,3 +3,11 @@ node_modules/
 .github_repo
 .env
 .env.*
+
+.output/
+.vercel/
+.nitro/
+dist/
+playwright-report/
+test-results/
+screenshots/

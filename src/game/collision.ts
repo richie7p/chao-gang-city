@@ -13,8 +13,8 @@ export function resolveCircleAabb(
 ): { x: number; z: number; hit: boolean; nx: number; nz: number; depth: number } {
   const nx0 = clamp(x, b.minX, b.maxX);
   const nz0 = clamp(z, b.minZ, b.maxZ);
-  let dx = x - nx0;
-  let dz = z - nz0;
+  const dx = x - nx0;
+  const dz = z - nz0;
   const d2 = dx * dx + dz * dz;
   if (d2 > r * r && d2 > 1e-10) {
     return { x, z, hit: false, nx: 0, nz: 0, depth: 0 };
@@ -87,14 +87,15 @@ export function separateCircles(
 ): { ax: number; az: number; bx: number; bz: number; hit: boolean; nx: number; nz: number } {
   const dx = ax - bx;
   const dz = az - bz;
-  let d2 = dx * dx + dz * dz;
+  const d2 = dx * dx + dz * dz;
   const min = ar + br;
   if (d2 >= min * min) {
     return { ax, az, bx, bz, hit: false, nx: 0, nz: 0 };
   }
-  const d = Math.sqrt(Math.max(d2, 1e-8));
-  const nx = dx / d;
-  const nz = dz / d;
+  const d = Math.sqrt(d2);
+  // Coincident centers still need a deterministic separating normal.
+  const nx = d > 1e-8 ? dx / d : 1;
+  const nz = d > 1e-8 ? dz / d : 0;
   const pen = min - d;
   const inv = 1 / (massA + massB);
   return {
