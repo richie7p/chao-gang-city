@@ -101,7 +101,7 @@ Requires **Node.js 22** and npm.
 ```bash
 git clone https://github.com/richie7p/chao-gang-city.git
 cd chao-gang-city
-npm install
+npm ci
 npm run dev
 ```
 
@@ -122,3 +122,7 @@ No database or sign-in is required to run the project.
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+## Audit and verification
+
+See [the audit follow-up](docs/AUDIT-FOLLOWUP.md) for fixes, reproducible test commands, bundle budgets and remaining device/deployment checks.

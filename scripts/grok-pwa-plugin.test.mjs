@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
   appNameFromHost,
-  createHeadInjector,
+  createHeadInjector as createRealHeadInjector,
   grokXCreatorHeadTags,
-  injectGrokPwaHead,
+  injectGrokPwaHead as injectRealGrokPwaHead,
   isDocumentPath,
   isInstallQuery,
   publicAppHost,
@@ -18,6 +18,11 @@ import {
   stripInstallParams,
 } from "./grok-pwa-shared.mjs";
 import { renderInstallPage } from "./grok-pwa-plugin.mjs";
+
+// Generic plugin fixtures must not inherit the real application's site/card.
+const EMPTY_ROOT = mkdtempSync(join(tmpdir(), "grok-pwa-empty-"));
+const injectGrokPwaHead = (html, options = {}) => injectRealGrokPwaHead(html, { cwd: EMPTY_ROOT, ...options });
+const createHeadInjector = (options = {}) => createRealHeadInjector({ cwd: EMPTY_ROOT, ...options });
 
 const TEMPLATE_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 

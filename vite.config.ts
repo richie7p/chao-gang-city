@@ -157,6 +157,20 @@ export default defineConfig(({ command, isPreview }) => ({
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          includeDependenciesRecursively: false,
+          groups: [
+            { name: "physics-wasm", test: /[\\/]node_modules[\\/]@dimforge[\\/]/, priority: 30 },
+            { name: "three-core", test: /[\\/]node_modules[\\/]three[\\/]/, priority: 20 },
+            { name: "react-three", test: /[\\/]node_modules[\\/]@react-three[\\/]/, priority: 10 },
+          ],
+        },
+      },
+    },
+  },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.

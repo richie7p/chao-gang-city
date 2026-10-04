@@ -342,7 +342,16 @@ export class GameEngine {
   }
 
   private tryPointerLock() {
-    this.canvas.requestPointerLock?.();
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    try {
+      // Pointer lock can be denied by browsers or the embedding host; drag
+      // look remains available, so rejection must not crash the game.
+      void Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {
+        this.mouseLook = false;
+      });
+    } catch {
+      this.mouseLook = false;
+    }
   }
 
   private unlockAudio() {
@@ -571,12 +580,12 @@ export class GameEngine {
       else car.speed -= CAR_ACCEL * 0.5 * brake * dt;
     } else {
       const sign = Math.sign(car.speed);
-      car.speed -= sign * CAR_DRAG * 3.2 * dt;
+      car.speed = sign * Math.max(0, Math.abs(car.speed) - CAR_DRAG * 3.2 * dt);
       if (Math.abs(car.speed) < 0.18) car.speed = 0;
     }
     if (handbrake) {
       const s = Math.sign(car.speed);
-      car.speed -= s * CAR_HANDBRAKE * dt;
+      car.speed = s * Math.max(0, Math.abs(car.speed) - CAR_HANDBRAKE * dt);
       if (Math.abs(car.speed) < 0.35) car.speed = 0;
     }
     car.speed = clamp(car.speed, -CAR_REVERSE_MAX, max);
@@ -670,8 +679,8 @@ export class GameEngine {
       car.occupant = null;
       car.speed = 0;
       const r = yawRight(car.yaw);
-      let x = car.x + r.x * 2.3;
-      let z = car.z + r.z * 2.3;
+      const x = car.x + r.x * 2.3;
+      const z = car.z + r.z * 2.3;
       const hit = resolveCircleList(x, z, PLAYER_RADIUS, this.city.colliders);
       this.player.x = hit.x;
       this.player.z = hit.z;
@@ -956,7 +965,7 @@ export class GameEngine {
         this.wanted.notifiedSearch = false;
       }
       const desiredYaw = Math.atan2(-dx, -dz);
-      let steer = clamp(wrapAngle(desiredYaw - car.yaw) * 2.8, -1, 1);
+      const steer = clamp(wrapAngle(desiredYaw - car.yaw) * 2.8, -1, 1);
       const throttle = d > 6 ? 0.9 : 0.2;
       this.integrateCar(car, dt, throttle, 0, steer, false);
       car.speed = clamp(car.speed, -6, 22 + this.wanted.stars * 1.5);
@@ -1150,6 +1159,7 @@ export class GameEngine {
 
   private completeMission() {
     const def = MISSIONS.find((m) => m.id === this.mission.id)!;
+    if (this.mission.complete) return;
     this.mission.complete = true;
     this.player.money += def.reward;
     this.missionComplete = UI.missionComplete(def.title, def.reward);
@@ -1343,7 +1353,7 @@ export class GameEngine {
     this.camSnap = false;
     let camX = lerp(this.camera.position.x, wantX, k);
     let camY = lerp(this.camera.position.y, wantY, k);
-    let camZ = lerp(this.camera.position.z, wantZ, k);
+    const camZ = lerp(this.camera.position.z, wantZ, k);
     if (this.crashShake > 0) {
       camX += (Math.random() - 0.5) * this.crashShake * 0.35;
       camY += (Math.random() - 0.5) * this.crashShake * 0.2;

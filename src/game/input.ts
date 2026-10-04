@@ -78,13 +78,13 @@ export class Input {
     window.addEventListener("keydown", onDown);
     window.addEventListener("keyup", onUp);
     window.addEventListener("blur", clear);
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) clear();
-    });
+    const onVisibility = () => { if (document.hidden) clear(); };
+    document.addEventListener("visibilitychange", onVisibility);
     this.unbind.push(() => {
       window.removeEventListener("keydown", onDown);
       window.removeEventListener("keyup", onUp);
       window.removeEventListener("blur", clear);
+      document.removeEventListener("visibilitychange", onVisibility);
     });
 
     let dragging = false;

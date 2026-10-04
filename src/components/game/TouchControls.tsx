@@ -58,7 +58,7 @@ export function TouchControls({
         onPointerUp={onLookUp}
         onPointerCancel={onLookUp}
       />
-      <div className="pointer-events-auto absolute right-4 bottom-8 flex flex-col gap-2">
+      <div data-testid="touch-actions" className="pointer-events-auto absolute right-4 bottom-8 flex flex-col gap-2">
         <PadBtn onPress={() => engineRef.current?.touchUse()}>{UI.touchUse}</PadBtn>
         <PadBtn onPress={() => engineRef.current?.touchTalk()}>{UI.touchTalk}</PadBtn>
         <PadBtn

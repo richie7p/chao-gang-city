@@ -107,7 +107,7 @@ export function GameHud({
       </div>
 
       {playing ? (
-        <div className="absolute bottom-5 left-1/2 flex w-[min(36rem,calc(100%-1.5rem))] -translate-x-1/2 flex-col items-center gap-2 pb-[max(0px,env(safe-area-inset-bottom))]">
+        <div data-testid="game-messages" className="absolute bottom-64 left-1/2 flex w-[min(36rem,calc(100%-1.5rem))] -translate-x-1/2 flex-col items-center gap-2 pb-[max(0px,env(safe-area-inset-bottom))] sm:bottom-5">
           {hud.wantedFlash ? (
             <p className="hud-panel px-3 py-1.5 text-sm text-wanted">{hud.wantedFlash}</p>
           ) : null}
@@ -217,7 +217,7 @@ function MainMenu({ onPlay }: { onPlay: () => void }) {
           <ul className="mt-3 space-y-1 text-xs text-subtle">
             {MISSIONS.map((m) => (
               <li key={m.id}>
-                {m.title}　{m.brief}
+                {m.title} {m.brief}
               </li>
             ))}
           </ul>
@@ -266,7 +266,7 @@ function DialoguePanel({
     <div className="w-full max-w-lg rounded-xl border border-border bg-surface px-5 py-5">
       <p className="text-lg font-medium">{data.name}</p>
       <p className="mt-1 text-xs text-muted">
-        職業：{data.job}　個性：{data.personality}　目前狀態：{data.status}
+        職業：{data.job} 個性：{data.personality} 目前狀態：{data.status}
       </p>
       <p className="mt-4 text-sm leading-relaxed">{line?.text}</p>
       <div className="mt-5 flex justify-end gap-2">
