@@ -34,7 +34,7 @@ References: [TanStack environment functions](https://tanstack.com/start/latest/d
 | --- | --- | --- |
 | Windows wrapper failure | Shared fix and Windows/Ubuntu build gate | Addressed |
 | Typecheck/lint failures, collision/engine whitespace | Strict typecheck; immutable locals; non-ASCII separator cleanup | Addressed |
-| Collision, mission, vehicle coverage absent | 12 domain tests exercise actual engine methods without a GPU: wall/corner/coincident collisions, speed limits, brake stop, steering signs, vehicle occupancy, intro reward idempotency, passenger delivery and wanted-state completion. Coincident-body separation, braking overshoot and repeat rewards are fixed. Input tests check key edges, hidden-tab reset and listener disposal; rejected pointer lock falls back to drag-look | Addressed |
+| Collision, mission, vehicle coverage absent | 14 domain tests exercise actual engine methods without a GPU: wall/corner/coincident collisions, speed limits, brake stop, steering signs, vehicle occupancy, intro reward idempotency, passenger delivery and wanted-state completion. Coincident-body separation, braking overshoot and repeat rewards are fixed. Input edges now survive frames without physics and run once during catch-up steps, preventing touch interactions from toggling twice. Input tests check key edges, hidden-tab reset and listener disposal; rejected pointer lock falls back to drag-look | Addressed |
 | Engine >500 kB and Three in server | Game engine is about 56 kB raw / 20 kB gzip, with independently cached Three about 525 kB raw / 131 kB gzip; Three is absent from SSR output. Engine load errors have an actionable fallback | Mitigated; device profiling remains |
 | Desktop/mobile interaction evidence | Repository E2E starts the game, verifies left/right steering through production input, pauses and resumes, checks overflow and page exceptions | Automated coverage added |
 | Real host asset/console policy | Requires the actual deployment response headers and host integration; no deployment performed | External verification |
@@ -47,6 +47,6 @@ Full manual mission playthrough (including NPC dialogue and shop), long-session 
 
 - Clean install, lint, typecheck (including tests), standard production build and bundle gate: passed.
 - Scaffold: 150 script tests + 24 auth/connector tests passed.
-- Product domain: 12 passed. Production E2E: 2 passed (desktop/mobile).
+- Product domain: 14 passed. Production E2E: 2 passed (desktop/mobile).
 - Current full dependency audit: 0 vulnerabilities.
 - Desktop/mobile screenshots inspected. Mobile instructions were moved above touch actions; E2E checks separation and taps the touch control to exit the car.

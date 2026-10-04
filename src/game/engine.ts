@@ -49,7 +49,7 @@ import {
 import { MISSIONS, NPC_PROFILES, UI, placeById } from "./data";
 import { ScriptedDialogueProvider } from "./dialogue";
 import { defaultHud, useHud } from "./hud-store";
-import { Input, type Actions } from "./input";
+import { ActionEdges, Input, type Actions } from "./input";
 import { createCar, createPerson, disposeTexCache, markerMesh } from "./meshes";
 import { buildCity, type CityWorld, type RoadNode } from "./city";
 import { disposeWorldTextures, loadWorldTextures, type WorldTextures } from "./textures";
@@ -77,6 +77,7 @@ export class GameEngine {
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.PerspectiveCamera(60, 1, 0.1, 280);
   readonly input = new Input();
+  private pendingEdges = new ActionEdges();
   private city: CityWorld;
   private player: PlayerState;
   private playerMesh: THREE.Group;
@@ -420,13 +421,16 @@ export class GameEngine {
       else if (this.phase === "shop") this.closeShop();
     }
 
+    if (this.phase !== "playing") this.pendingEdges.clear();
     if (this.phase === "playing") {
+      this.pendingEdges.push(actions);
       this.acc += dt;
       if (this.acc > MAX_ACCUM) this.acc = MAX_ACCUM;
       while (this.acc >= FIXED_DT) {
-        this.fixed(FIXED_DT, actions);
+        this.fixed(FIXED_DT, this.pendingEdges.consume(actions));
         this.acc -= FIXED_DT;
         this.time += FIXED_DT;
+        if (this.phase !== "playing") { this.acc = 0; break; }
       }
     } else if (this.phase === "menu") {
       this.acc += dt;

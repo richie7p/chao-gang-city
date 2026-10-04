@@ -34,6 +34,26 @@ const GAME_CODES = new Set([
   "Escape",
 ]);
 
+/** Retain one-shot presses until a physics step, then consume them exactly once. */
+export class ActionEdges {
+  private jump = false;
+  private use = false;
+  private talk = false;
+  push(actions: Actions) {
+    this.jump ||= actions.jumpPressed;
+    this.use ||= actions.usePressed;
+    this.talk ||= actions.talkPressed;
+  }
+  consume(actions: Actions): Actions {
+    const result = { ...actions, jumpPressed: this.jump, usePressed: this.use, talkPressed: this.talk };
+    this.clear();
+    return result;
+  }
+  clear() {
+    this.jump = this.use = this.talk = false;
+  }
+}
+
 function radialDeadzone(x: number, y: number, dz = 0.18): { x: number; y: number } {
   const m = Math.hypot(x, y);
   if (m < dz) return { x: 0, y: 0 };

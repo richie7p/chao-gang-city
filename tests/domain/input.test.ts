@@ -1,6 +1,23 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { Input } from "../../src/game/input";
+import { ActionEdges, Input } from "../../src/game/input";
+
+test("touch interaction survives a frame without physics and fires once during catch-up", () => {
+  const input = new Input(); const edges = new ActionEdges();
+  input.latchTouchUse(); edges.push(input.sample());
+  const held = input.sample(); edges.push(held);
+  assert.equal(edges.consume(held).usePressed, true);
+  assert.equal(edges.consume(held).usePressed, false);
+});
+
+test("jump and talk edges are consumed once and cleared when leaving play", () => {
+  const input = new Input(); const edges = new ActionEdges();
+  input.keys.add("Space"); input.latchTouchTalk();
+  const first = input.sample(); edges.push(first);
+  const step = edges.consume(first); assert.equal(step.jumpPressed, true); assert.equal(step.talkPressed, true);
+  assert.equal(edges.consume(first).jumpPressed, false);
+  edges.push(first); edges.clear(); assert.equal(edges.consume(first).talkPressed, false);
+});
 test("keyboard steering signs and one-shot interaction edges", () => {
   const input = new Input(); input.keys.add("KeyW"); input.keys.add("KeyA"); input.keys.add("KeyE");
   const first = input.sample(); assert.equal(first.throttle, 1); assert.equal(first.steer, 1); assert.equal(first.usePressed, true);
